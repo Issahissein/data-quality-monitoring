@@ -15,6 +15,12 @@ for csv_file in csv_files:
 
 data = pd.concat(dataframes, ignore_index=True)
 
+# Remove rows with missing values
+data = data.dropna()
+
+# Remove rows with unexpected units
+data = data[data["unit"] == "visitors"]
+
 daily_traffic = (
     data.groupby("date")["visitors"]
     .sum()
