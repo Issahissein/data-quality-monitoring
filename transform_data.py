@@ -15,4 +15,10 @@ for csv_file in csv_files:
 
 data = pd.concat(dataframes, ignore_index=True)
 
-print(data)
+daily_traffic = (
+    data.groupby("date")["visitors"]
+    .sum()
+    .reset_index()
+)
+
+print(daily_traffic)
