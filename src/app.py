@@ -15,15 +15,21 @@ capteur = VisitSensor(
 
 @app.get("/visits")
 def get_visits(business_date: date):
-    total_visits = 0
+    visits = []
 
     for hour in range(24):
-        total_visits += capteur.simulate_visit(
-            business_date,
-            hour,
+        visits.append(
+            {
+                "date": business_date,
+                "hour": hour,
+                "sensor_id": 1,
+                "store_id": 1,
+                "visitors": capteur.simulate_visit(
+                    business_date,
+                    hour,
+                ),
+                "unit": "visitors",
+            }
         )
 
-    return {
-        "date": business_date,
-        "visitors": total_visits,
-    }
+    return visits
