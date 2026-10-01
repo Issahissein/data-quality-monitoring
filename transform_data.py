@@ -71,4 +71,15 @@ daily_traffic["pct_change"] = (
     * 100
 )
 
+# Save processed data as Parquet
+output_directory = Path("data/processed")
+output_directory.mkdir(parents=True, exist_ok=True)
+
+output_file = output_directory / "filtered.parquet"
+
+daily_traffic.to_parquet(
+    output_file,
+    index=False,
+)
+
 print(daily_traffic)
