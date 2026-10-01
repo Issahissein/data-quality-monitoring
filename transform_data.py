@@ -48,17 +48,27 @@ daily_traffic = daily_traffic.sort_values(
     ]
 )
 
-# Average over the last 4 same days of the week
+# Average of the 4 previous same days of the week
 daily_traffic["average_last_4"] = (
     daily_traffic.groupby(
         ["day_of_week", "store_id", "sensor_id"]
     )["visitors"]
     .transform(
-        lambda values: values.rolling(
+        lambda values: values.shift(1).rolling(
             window=4,
             min_periods=1,
         ).mean()
     )
+)
+
+# Percentage difference from the average
+daily_traffic["pct_change"] = (
+    (
+        daily_traffic["visitors"]
+        - daily_traffic["average_last_4"]
+    )
+    / daily_traffic["average_last_4"]
+    * 100
 )
 
 print(daily_traffic)
