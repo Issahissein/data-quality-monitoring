@@ -24,4 +24,4 @@ filtered_data = duckdb.sql(f"""
     WHERE sensor_id = {selected_sensor}
 """).df()
 
-st.dataframe(filtered_data)
+st.write(filtered_data)
