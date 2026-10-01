@@ -17,3 +17,11 @@ selected_sensor = st.selectbox(
     "Choisir un capteur",
     sensors["sensor_id"],
 )
+
+filtered_data = duckdb.sql(f"""
+    SELECT *
+    FROM 'data/processed/filtered.parquet'
+    WHERE sensor_id = {selected_sensor}
+""").df()
+
+st.dataframe(filtered_data)
