@@ -301,6 +301,69 @@ Streamlit
 
 L'extraction et la transformation sont orchestrées avec **Apache Airflow**.
 
+## Next Steps
+
+Le projet actuel permet de démontrer le fonctionnement complet du pipeline. Avec davantage de temps, plusieurs améliorations pourraient être mises en place afin de rapprocher cette architecture d'un environnement de production.
+
+### Stockage des données dans le Cloud
+
+Les fichiers CSV et Parquet sont actuellement stockés localement dans les dossiers `data/raw` et `data/processed`.
+
+Une évolution serait de stocker ces données dans un service de stockage Cloud comme **Amazon S3**.
+
+Cela permettrait de centraliser les données et de les rendre accessibles aux différents services du pipeline.
+
+### Exécution du pipeline dans le Cloud
+
+Les traitements d'extraction et de transformation sont actuellement exécutés localement.
+
+Une prochaine étape serait de déplacer leur exécution sur une infrastructure Cloud, par exemple une instance **Amazon EC2**, tout en utilisant Airflow pour orchestrer les différentes tâches.
+
+### Récupération d'un an d'historique
+
+Le pipeline pourrait récupérer et conserver au moins **un an d'historique** de fréquentation.
+
+Un historique plus important permettrait d'effectuer des comparaisons sur de longues périodes et de mieux identifier les variations inhabituelles de fréquentation.
+
+### Système d'alertes
+
+Un système d'alertes pourrait être ajouté afin de détecter automatiquement les anomalies.
+
+Par exemple, une alerte pourrait être déclenchée lorsqu'une valeur journalière pour un capteur passe sous un seuil défini.
+
+Airflow pourrait ensuite déclencher automatiquement l'envoi d'un **email d'alerte** afin de prévenir l'équipe responsable du monitoring.
+
+### Comparaison entre les capteurs d'un même lieu
+
+Le projet pourrait également comparer le pourcentage d'évolution d'un capteur avec celui des autres capteurs du même lieu pour une même date.
+
+Si le pourcentage de changement d'un capteur est très différent de celui des autres capteurs du lieu, une alerte pourrait être générée.
+
+Cette approche permettrait notamment de détecter plus facilement un capteur défectueux ou une donnée anormale.
+
+### Dashboards et graphiques supplémentaires
+
+L'application Streamlit pourrait être enrichie avec de nouvelles visualisations, par exemple :
+
+- évolution de la fréquentation sur plusieurs mois ;
+- comparaison entre plusieurs capteurs ;
+- comparaison entre plusieurs lieux ;
+- nombre d'anomalies détectées ;
+- évolution du pourcentage de changement ;
+- tableau des alertes détectées.
+
+### Monitoring du pipeline
+
+Une évolution supplémentaire serait de mettre en place un suivi de l'état du pipeline afin de détecter les erreurs d'extraction ou de transformation.
+
+Des notifications pourraient par exemple être envoyées automatiquement lorsqu'une tâche Airflow échoue.
+
+### Tests et intégration continue
+
+Le projet pourrait également être renforcé avec davantage de tests automatisés sur les différentes étapes du pipeline.
+
+Une pipeline de **CI/CD avec GitHub Actions** pourrait automatiquement lancer les tests avant chaque déploiement et faciliter la mise en production des nouvelles versions.
+
 ## Déploiement
 
 L'API FastAPI est déployée sur **Render** :
