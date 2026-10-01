@@ -16,21 +16,27 @@ Le pipeline permet de :
 - simuler et détecter des problèmes de qualité de données ;
 - nettoyer et transformer les données avec Pandas ;
 - stocker les données transformées au format Parquet ;
-- interroger les données avec DuckDB ;
+- interroger les données avec DuckDB et SQL ;
 - visualiser les résultats avec Streamlit ;
 - orchestrer l'extraction et la transformation avec Apache Airflow.
 
 ## Architecture du pipeline
 
+![Architecture du pipeline Data Quality Monitoring](images/architecture.png)
+
+Le pipeline suit le flux suivant :
+
 ```text
 Capteurs simulés
+Python + NumPy
       │
       ▼
 FastAPI
+GET /visits
       │
       ▼
 EXTRACT
-extract_data.py
+Python
       │
       ▼
 data/raw
@@ -38,20 +44,20 @@ CSV
       │
       ▼
 TRANSFORM
-transform_data.py
+Pandas
       │
       ▼
 data/processed
 Parquet
       │
       ▼
-DuckDB
+DuckDB + SQL
       │
       ▼
 Streamlit
 ```
 
-Apache Airflow orchestre les étapes :
+Apache Airflow orchestre les étapes d'extraction et de transformation :
 
 ```text
 EXTRACT ──────► TRANSFORM
@@ -62,11 +68,12 @@ Le DAG est configuré pour exécuter le pipeline toutes les heures.
 ## Technologies utilisées
 
 - Python
+- NumPy
 - FastAPI
 - Pandas
-- NumPy
-- Parquet / PyArrow
+- PyArrow / Parquet
 - DuckDB
+- SQL
 - Streamlit
 - Plotly
 - Apache Airflow
@@ -178,7 +185,7 @@ data/processed  → Parquet
 
 Une application **Streamlit** permet de visualiser les données transformées.
 
-**DuckDB** est utilisé pour interroger directement les données stockées dans le fichier Parquet.
+**DuckDB** est utilisé pour interroger directement les données stockées dans le fichier Parquet avec des requêtes SQL.
 
 La sidebar permet à l'utilisateur de sélectionner :
 
@@ -241,6 +248,9 @@ data-quality-monitoring/
 │   └── processed/
 │       └── filtered.parquet
 │
+├── images/
+│   └── architecture.png
+│
 ├── src/
 │   ├── app.py
 │   └── sensor.py
@@ -273,7 +283,7 @@ Transformation Pandas
 Parquet
    │
    ▼
-DuckDB
+DuckDB + SQL
    │
    ▼
 Streamlit
